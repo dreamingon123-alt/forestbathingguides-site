@@ -18,7 +18,7 @@ The static website for Forest Bathing Switzerland. One page per language: Englis
 1. Edit `src/` or `static/`.
 2. Push to `main`.
 3. GitHub builds the site into the `live` branch (`.github/workflows/deploy.yml`).
-4. A Hostpoint cron job fetches the `live` branch into the web folder every 15 minutes. No keys or passwords are stored anywhere.
+4. A Hostpoint cron job fetches the `live` branch into the web folder every 10 minutes (into ~/www/fbs-static). No keys or passwords are stored anywhere.
 
 The build stops on a second H1, an em dash, a missing image or an absolute upload URL.
 
