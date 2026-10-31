@@ -28,7 +28,7 @@ PAGES={
    imp='Impressum: Forest Bathing Switzerland, Catherine Peloquin, Zug, Schweiz.',
    privacy_h='Datenschutz',privacy='Diese Seite nutzt Google Analytics und Microsoft Clarity, um zu verstehen, wie Besuchende sie nutzen. Es gibt keine Formulare auf dieser Seite. Wenn Sie uns eine E-Mail schreiben, verwenden wir Ihre Nachricht nur für die Antwort.'),
 }
-AREA=['Zug','Cham','Baar','Steinhausen','Oberwil','Walchwil','Oberägeri','Zurich','Lucerne','Switzerland']
+AREA=['Canton of Zug','Zug','Oberwil bei Zug','Baar','Cham','Steinhausen','Hünenberg','Risch-Rotkreuz','Walchwil','Unterägeri','Oberägeri','Menzingen','Zugerberg','Zurich','Lucerne','Switzerland']
 SAMEAS=['https://www.myswitzerland.com/en-ch/planning/offers/forest-bathing-shinrin-yoku-from-zug/','https://www.zug-tourismus.ch/en/poi/poi-and-infrastructure/forest-bathing/','https://www.swissactivities.com/en-ch/hiking/forest-bathing-team-event-zug/','https://anft.earth/',LINKEDIN]
 
 css=open('src/site.css').read().replace(DOMAIN+'/wp-content/','/wp-content/')
