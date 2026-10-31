@@ -4,6 +4,9 @@ DirectoryIndex index.html
 ErrorDocument 404 /404.html
 RewriteEngine On
 
+# Never serve the git folder Hostpoint uses to fetch updates
+RewriteRule (^|/)\.git(/|$) - [F,L]
+
 # One canonical host: https, no www
 RewriteCond %{HTTPS} !=on [OR]
 RewriteCond %{HTTP_HOST} ^www\. [NC]
