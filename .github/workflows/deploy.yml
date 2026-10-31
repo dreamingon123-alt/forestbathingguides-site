@@ -8,6 +8,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    # Rebuild every 1 January (00:17 UTC) so the footer year updates on its own.
+    - cron: '17 0 1 1 *'
 
 permissions:
   contents: write
