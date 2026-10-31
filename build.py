@@ -16,7 +16,7 @@ PAGES={
    desc='Guided forest bathing (Shinrin Yoku), outdoor team events and coaching in Zug, Zurich and across Switzerland. Certified guides for teams, groups and individuals.',
    entity='Forest Bathing Switzerland is a network of certified forest therapy guides leading guided forest bathing (Shinrin Yoku) and nature experiences for teams, groups and individuals across Switzerland.',
    nav=[('#teams','Teams'),('#groups','Individuals & groups'),('#public','Public events'),('#faq','FAQ'),('/waldbaden/','Deutsch')],
-   h_explore='Explore',h_contact='Contact',join='Join an upcoming event',call='Book a 15-minute call',country='Zug, Switzerland',
+   h_explore='Explore',h_contact='Contact',email_label='Email us',join='Join an upcoming event',call='Book a 15-minute call',country='Zug, Switzerland',
    imp='Impressum: Forest Bathing Switzerland, Catherine Peloquin, Zug, Switzerland.',
    privacy_h='Privacy',privacy='This page uses Google Analytics and Microsoft Clarity to understand how visitors use it. There are no forms on this site. If you email us, we use your message only to answer it.'),
  'de':dict(path='/waldbaden/',out='site/waldbaden/index.html',lang='de-CH',og='de_CH',
@@ -24,7 +24,7 @@ PAGES={
    desc='Geführtes Waldbaden in Zug und Zürich für Einzelpersonen und Gruppen. Outdoor-Teamevents für Firmen in der ganzen Schweiz. Zertifizierte Guides.',
    entity='Forest Bathing Switzerland ist ein Netzwerk zertifizierter Waldtherapie-Guides für Waldbaden (Shinrin Yoku) und Naturerlebnisse für Teams, Gruppen und Einzelpersonen in der ganzen Schweiz.',
    nav=[('#teams','Teams'),('#groups','Einzelpersonen & Gruppen'),('#public','Öffentliche Anlässe'),('#faq','FAQ'),('/','English')],
-   h_explore='Übersicht',h_contact='Kontakt',join='Nächste Anlässe',call='15-Minuten-Gespräch buchen',country='Zug, Schweiz',
+   h_explore='Übersicht',h_contact='Kontakt',email_label='E-Mail schreiben',join='Nächste Anlässe',call='15-Minuten-Gespräch buchen',country='Zug, Schweiz',
    imp='Impressum: Forest Bathing Switzerland, Catherine Peloquin, Zug, Schweiz.',
    privacy_h='Datenschutz',privacy='Diese Seite nutzt Google Analytics und Microsoft Clarity, um zu verstehen, wie Besuchende sie nutzen. Es gibt keine Formulare auf dieser Seite. Wenn Sie uns eine E-Mail schreiben, verwenden wir Ihre Nachricht nur für die Antwort.'),
 }
@@ -74,7 +74,7 @@ def footer(L):
       </div>
       <div><h4>{p['h_explore']}</h4><ul>{nav}</ul></div>
       <div><h4>{p['h_contact']}</h4><ul>
-        <li><a href="mailto:{MAIL}">{MAIL}</a></li>
+        <li><a href="mailto:{MAIL}">{p['email_label']}</a></li>
         <li><a href="{NRC}">{p['join']}</a></li>
         <li><a href="{CAL}">{p['call']}</a></li>
         <li><a href="{LINKEDIN}">LinkedIn</a></li>
@@ -100,7 +100,7 @@ def faq_from(body):
 def schema(L,body):
     p=PAGES[L]; url=DOMAIN+p['path']
     org={"@type":"Organization","@id":DOMAIN+"/#org","name":"Forest Bathing Switzerland","url":DOMAIN+"/",
-         "logo":DOMAIN+"/wp-content/uploads/2024/10/cropped-Forest_Bathing_favicon-270x270.png","email":MAIL,
+         "logo":DOMAIN+"/wp-content/uploads/2024/10/cropped-Forest_Bathing_favicon-270x270.png",
          "description":PAGES['en']['entity'],
          "address":{"@type":"PostalAddress","addressLocality":"Zug","addressCountry":"CH"},
          "areaServed":[{"@type":"Place","name":a} for a in AREA],"knowsLanguage":["en","de","it"],"sameAs":SAMEAS,
@@ -178,8 +178,16 @@ open('site/sitemap.xml','w').write(f'''<?xml version="1.0" encoding="UTF-8"?>
 open('site/.htaccess','w').write(open('src/htaccess.txt').read())
 
 # Checks: catch the mistakes that have bitten this site before
+USER,DOM=MAIL.split('@')
+EMAILJS="<script>(function(){var u='%s',d='%s';document.querySelectorAll('a[href^=\"#email\"]').forEach(function(a){a.setAttribute('href','mailto:'+u+'@'+d+a.getAttribute('href').slice(6));});})();</script>"%(USER,DOM)
+for L in ('en','de'):
+    f=PAGES[L]['out']; out=open(f).read()
+    out=out.replace('mailto:'+MAIL,'#email').replace('</body>',EMAILJS+'\n</body>',1)
+    open(f,'w').write(out)
 for L in ('en','de'):
     out=open(PAGES[L]['out']).read()
+    assert MAIL not in out, L+': email address visible in HTML'
+
     assert out.count('<h1')==1, L+': exactly one H1'
     assert '—' not in re.sub(r'<script.*?</script>|<style>.*?</style>','',out,flags=re.S), L+': em dash in copy'
     assert 'forestbathingguides.ch/wp-content' not in re.sub(r'<script.*?</script>|<meta[^>]*>','',out,flags=re.S), L+': absolute upload URL left'
