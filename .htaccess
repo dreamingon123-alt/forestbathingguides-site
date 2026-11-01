@@ -1,0 +1,42 @@
+# forestbathingguides.ch static site (Hostpoint, Apache)
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+RewriteEngine On
+
+# Never serve the git folder Hostpoint uses to fetch updates
+RewriteRule (^|/)\.git(/|$) - [F,L]
+
+# One canonical host: https, no www
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^ https://forestbathingguides.ch%{REQUEST_URI} [R=301,L,NE]
+
+# Old WordPress query URLs (?page_id=, ?p=) to the homepage
+RewriteCond %{QUERY_STRING} (^|&)(page_id|p|cat|author)= [NC]
+RewriteRule ^$ /? [R=301,L,QSD]
+
+# Legacy WordPress pages and archives (all kept their backlinks) to the homepage
+RewriteRule ^(about|aboutus|experiences|contact|blog|faq|gallery|portfolio|home|home-new|sample-page|corporate-creative-landing|corporate-creative-news|corporate-creative-contact)/?$ / [R=301,L]
+RewriteRule ^(feed|comments/feed|author/[^/]+|category/[^/]+|tag/[^/]+)/?$ / [R=301,L]
+
+# Old sitemap URLs submitted to Search Console and Bing
+RewriteRule ^(sitemap_index|page-sitemap|wp-sitemap)\.xml$ /sitemap.xml [R=301,L]
+
+# WordPress system paths are gone for good
+RewriteRule ^(wp-login\.php|xmlrpc\.php|wp-admin|wp-json|wp-includes)(/.*)?$ - [G,L]
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Strict-Transport-Security "max-age=31536000"
+  <FilesMatch "\.(webp|jpg|jpeg|png|svg|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(html|xml|txt)$">
+    Header set Cache-Control "public, max-age=600"
+  </FilesMatch>
+</IfModule>
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript text/xml application/xml text/plain image/svg+xml
+</IfModule>
