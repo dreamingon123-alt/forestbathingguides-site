@@ -18,6 +18,9 @@ Everything a future session needs to run this site. Replaces the Mac folder "For
 12. Nature quotes: one list (`src/quotes.json`), verbatim, used on both pages here and on the Nature Reset Club page. A new quote goes onto all three or none. Towns are real.
 13. The email address never appears in the page source (the build enforces this).
 14. Coach, not therapist: no treatment, cure or health-promise language.
+15. Visible place wording is only "Zug", "Zurich" and "across Switzerland" (Cat, 1 Nov 2026). No lists of town names on the page; the canton of Zug towns live in the schema only.
+16. Cat declared the site finished on 1 Nov 2026. Between quarterly reviews, change nothing unless she asks. The quarterly review limits itself to titles, metas, FAQ wording and schema.
+17. Testimonial towns are the person's real town.
 
 ## 2. How the site works
 
